@@ -1,0 +1,44 @@
+﻿@page "/TestApi"
+@inherits PageCore<TestApi>
+@inject HttpClient Http
+
+<Jumbotron Background="Background.Primary" Margin="Margin.Is3.FromBottom" Padding="Padding.Is3.FromBottom.Is3.FromTop">
+    <JumbotronTitle Size="JumbotronTitleSize.Is4">static content</JumbotronTitle>
+</Jumbotron>
+
+<Row>
+    <Column ColumnSize="ColumnSize.Is12">
+        <Card Margin="Margin.Is3.FromBottom">
+            <CardHeader>
+                Destaques da Semana - Localização (São Paulo)
+            </CardHeader>
+            <CardBody>
+                <Row>
+                    @if (lstDestaques != null)
+                    {
+                        @foreach (var item in lstDestaques)
+                        {
+                            <Column ColumnSize="ColumnSize.Is1.OnFullHD.Is2.OnDesktop.Is4.OnMobile">
+                                <Card Margin="Margin.Is3.FromBottom.OnMobile.Is0.OnFullHD">
+                                    <CardImage Source="@item.Photo.GetMainPhoto()" Alt="Photo Image"></CardImage>
+                                    <Paragraph Margin="Margin.Is0.FromBottom" Alignment="TextAlignment.Center" Style="font-size: small;"></Paragraph>
+                                    <Badge Color="Color.Light" Style="font-size: 11px;">@item.NickName</Badge>
+                                    <Badge Color="Color.Light" Style="font-size: 9px; position: absolute; top: 5px; left: 5px;">0 XP</Badge>
+                                </Card>
+                            </Column>
+                        }
+                    }
+                </Row>
+            </CardBody>
+        </Card>
+    </Column>
+</Row>
+
+@code {
+    private IEnumerable<SharedDll.ProfileSearch> lstDestaques;
+
+    protected override async Task LoadData()
+    {
+        lstDestaques = await Http.Gamification_ListDestaques();
+    }
+}
